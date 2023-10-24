@@ -35,10 +35,9 @@ def login():
         if auth.username != e_mail or auth.password != password:
             return "Invalid credentials", 401
         else:
-            # Do testów
-            # return 'Fuck yeah', 200
-            # return createJWT(auth.username, 'kupa', True)
-            return createJWT(auth.username, os.environ.get("JWT_SECRET"), True)
+            # Simplified for testing
+            return createJWT(auth.username, 'secret', True)
+            # return createJWT(auth.username, os.environ.get("JWT_SECRET"), True)
 
     else:
         return "Invalid credentials", 401
@@ -53,8 +52,13 @@ def validate():
     encoded_jwt = encoded_jwt.split(' ')[1]
 
     try:
-        decoded_jwt = jwt.decode(encoded_jwt, os.environ.get('JWT_SECRET'), algorithm=['HS256'])
+        # Simplified for testing
+        decoded_jwt = jwt.decode(encoded_jwt, 'secret', algorithms=['HS256'])
+        # decoded_jwt = jwt.decode(encoded_jwt, os.environ.get('JWT_SECRET'), algorithms=['HS256'])
     except:
+        # Delete these line. For testing only
+        print('Something went wrong at /validate route')
+        print(encoded_jwt)
         return "Not authorized", 403
     return decoded_jwt, 200
 
